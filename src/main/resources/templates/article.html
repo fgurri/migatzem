@@ -1,0 +1,79 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>MIgatzem</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet">	
+		<link th:href="@{/css/migatzem.css}" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+		<link rel="icon" type="image/jpg" th:href="@{/img/favicon.jpg}" />
+		<script type="text/javascript" th:inline="javascript">
+			function confirm_delete(article_name) {
+				var r = confirm("Aquesta acció no es podrà desfer! Està segur que vol eliminar l'article " + article_name + "?");
+				if (r == true) {
+				  window.location.href = /*[[@{/deleteArticle/__*{id}__}]]*/'';
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<a th:href="@{/}"><img th:src="@{/img/Migatzem_blanc_negre.png}" width="250" height="100"/></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h1>[[${title}]]</h1>
+				</div>
+			</div>
+			<form method="POST" action="#" th:action="@{/__${command}__}" th:object="${article}">
+				<div class="alert alert-danger" th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>
+				<table class="table table-striped">
+					<tr>
+	                    <td>Id</td><td><input type="text" th:field="*{id}" disabled=true/><span th:if="${#fields.hasErrors('id')}">&nbsp;<i class="fa fa-exclamation" style="font-size:24px;color:red"></i></span></td>
+	                </tr>
+	                <tr>
+	                    <td>Referencia</td><td><input type="text" th:field="*{reference}"/><span th:if="${#fields.hasErrors('reference')}">&nbsp;<i class="fa fa-exclamation" style="font-size:24px;color:red"></i></span></td>
+	                </tr>
+	                
+	                <tr>
+	                	<td>Nom</td><td><input type="text" th:field="*{nom}" /><span th:if="${#fields.hasErrors('nom')}">&nbsp;<i class="fa fa-exclamation" style="font-size:24px;color:red"></i></span></td>
+	                </tr>
+	                <tr>
+	                	<td>Codi de barres</td><td><input type="text" th:field="*{serialNumber}" /><span th:if="${#fields.hasErrors('serialNumber')}">&nbsp;<i class="fa fa-exclamation" style="font-size:24px;color:red"></i></span></td>
+	                </tr>
+	                <tr>
+	                	<td>Stock actual</td><td><input type="text" th:field="*{stockactual}" /><span th:if="${#fields.hasErrors('stockactual')}">&nbsp;<i class="fa fa-exclamation" style="font-size:24px;color:red"></i></span></td>
+	                </tr>
+	                <tr>
+		                <td>Mesura</td>
+		                <td>
+		                    <select th:field="*{mesura}">
+		                         <option value=""> -- </option>
+		                         <option th:each="mesura : ${mesures}"
+		                            th:value="${mesura.id}"
+		                            th:utext="${mesura.id}"/>
+		                  </select>
+		 
+		                </td>
+		            </tr>
+	                <tr>
+	                	<td>Stock mínim</td><td><input type="text" th:field="*{stockminim}" /><span th:if="${#fields.hasErrors('stockminim')}">&nbsp;<i class="fa fa-exclamation" style="font-size:24px;color:red"></i></span></td>
+	                </tr>
+	                <tr>
+	                    <td colspan="100%">
+	                    	<button type="submit" title="Guardar"  class="btn btn-link"><i class="fas fa-save" style="font-size:24px;color:black"></i></button>
+	                    	<span th:if="${id != null}">
+	                    		<a th:onclick="'confirm_delete(\'' + *{nom} + '\');'" href="#" class="btn" title="Eliminar"><i class="fas fa-times-circle" style="font-size:24px;color:black"></i></a>
+	                    	</span>
+	                    	<a th:href="@{/articles/search}" class="btn" title="Tornar"><i class="fas fa-reply" style="font-size:24px;color:black"></i></a>
+	                    </td>
+	                </tr>
+				</table>
+	        </form>
+	        <script src="/webjars/jquery/1.9.1/jquery.min.js"></script>
+		    <script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+        </div> <!-- container -->
+	</body>
+</html>

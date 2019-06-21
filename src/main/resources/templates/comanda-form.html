@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>MIgatzem</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet">	
+		<link th:href="@{/css/migatzem.css}" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+		<link rel="icon" type="image/jpg" th:href="@{/img/favicon.jpg}" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<a th:href="@{/}"><img th:src="@{/img/Migatzem_blanc_negre.png}" width="250" height="100"/></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h1>[[${title}]]</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					Introdueixi el correu a qui vol enviar la comanda
+				</div>
+			</div>
+			<form method="POST" action="#" th:action="@{/articles/comanda}">
+				<table class="table table-striped">
+					<tr>
+	                	<td>email</td><td><input type="text" name="to" /></td>
+	                </tr>
+	                <tr>
+	                    <td colspan="100%">
+	                    	<button type="submit" title="Enviar"  class="btn btn-link"><i class="fas fa-save" style="font-size:24px;color:black"></i></button>
+	                    	<a th:href="@{/articles/search}" class="btn" title="Tornar"><i class="fas fa-reply" style="font-size:24px;color:black"></i></a>
+	                    </td>
+	                </tr>
+				</table>
+	        </form>
+	        <script src="/webjars/jquery/1.9.1/jquery.min.js"></script>
+		    <script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+        </div> <!-- container -->
+	</body>
+</html>

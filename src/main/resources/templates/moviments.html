@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>MIgatzem</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet">
+		<link th:href="@{/css/migatzem.css}" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+		<link rel="icon" type="image/jpg" th:href="@{/img/favicon.jpg}" />	
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<a th:href="@{/}"><img th:src="@{/img/Migatzem_blanc_negre.png}" width="250" height="100"/></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h1>[[${title}]]</h1>
+				</div>
+			</div>
+			<table class="table table-striped">
+				<tr>
+					<th>Identificador</th>
+	                <th>Dia</th>
+	                <th>Quantitat</th>
+	                <th>Usuari</th>
+				</tr>
+	            <tr th:each="moviments : ${moves}">
+	            	<td th:text="${moviments.id}"></td>
+	                <td th:text="${#temporals.format(moviments.diaHora, 'dd-MM-yyyy HH:mm')}"></td>
+	                <td th:text="${moviments.quantitat}"></td>
+	                <td th:text="${moviments.usuari}"></td>
+	             </tr>
+	             <tr>
+			             	<td colspan="100%" align="center">
+			             		<span th:if="${currentpage>0}">
+							        <a th:href="@{/moviments/{path}(path=${idArticle}, currentpage=${currentpage-1})}" th:class="link"><< </a>
+							    </span>
+							    <th:block th:each="i: ${#numbers.sequence(0, totalpages-1)}">
+							        <span th:if="${currentpage == i}" class="selected" th:class="link">[[${i}+1]]</span>
+							        <span th:unless="${currentpage == i}">
+							             <a th:href="@{/moviments/{path}(path=${idArticle}, currentpage=${i})}" th:class="link">[[${i}+1]]</a>
+							        </span>
+							    </th:block>
+							    <span th:if="${(currentpage+1)<totalpages}">
+							        <a th:href="@{/moviments/{path}(path=${idArticle}, currentpage=${currentpage+1})}" th:class="link">>></a>
+							    </span>
+			             	</td>
+			             </tr>                       
+			</table>
+			<a th:href="@{/articles/search}" class="btn" title="Tornar"><i class="fas fa-reply" style="font-size:24px;color:black"></i></a>
+				
+	        <script src="/webjars/jquery/1.9.1/jquery.min.js"></script>
+		    <script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+        </div> <!-- container -->
+	</body>
+</html>

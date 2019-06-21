@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>MIgatzem</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/migatzem.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<style>
+			table {
+			    border-collapse: collapse;
+			    border-spacing: 10px;
+			}
+			
+			table, td, th {
+			    border: 1px solid black;
+			    padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					Llista d'articles que estan per sota del stock minim definit:
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+				<br>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table table-striped">
+						<tr>
+							<th>Referencia</th>
+			                <th>Article</th>	
+			                <th>Comanda</th>
+			                <th>% Stock</th>
+						</tr>
+			            <tr th:each="article : ${viewmyarticles}">
+			            	<td th:text="${article.reference}"></td>
+			            	<td th:text="${article.nom}"></td>
+			                <td>[[${article.stockminim - article.stockactual}]] [[${article.mesura?.id}]]</td>
+			                <td th:classappend="${((article.stockactual*1.0 / article.stockminim)*100) < umbral } ? deficit">[[${#numbers.formatDecimal((article.stockactual*1.0 / article.stockminim)*100, 0, 'DEFAULT', 2, 'DEFAULT')}]] % ([[${article.stockactual}]] / [[${article.stockminim}]])</td>
+			        	</tr>
+			        </table>
+			</div>
+			<script src="/webjars/jquery/1.9.1/jquery.min.js"></script>
+	        <script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		</div> <!-- container -->        
+	</body>
+</html>

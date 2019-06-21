@@ -1,0 +1,98 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>MIgatzem</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet">
+		<link th:href="@{/css/migatzem.css}" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+		<link rel="icon" type="image/jpg" th:href="@{/img/favicon.jpg}" />
+	</head>
+	<body>
+
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<a th:href="@{/}"><img th:src="@{/img/Migatzem_blanc_negre.png}" width="250" height="100"/></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h1>[[${title}]]</h1>
+				</div>
+			</div>
+			<div th:if="${message != null && message != ''}" th:text="${message}" class="alert alert-success" role="alert"/>
+			<div class="row">
+				<div class="col-sm-8">
+					<a th:href="@{/articles/new}" class="btn" title="Nou Article"><i class="fas fa-plus" style="font-size:24px;color:black"></i></a>
+					<a th:href="@{/articles/lowstock}" class="btn" title="Veure stock baix"><i class="fas fa-shopping-cart" style="font-size:24px;color:black"></i></a>
+					<a th:href="@{/articles/comanda-form}" class="btn" title="Generar comanda"><i class="fas fa-store" style="font-size:24px;color:black"></i></a>
+				</div>
+				<div class="col-sm-4">
+					<form th:action="@{/articles/search}" method="GET">
+						<input type="text" name="searchtext" th:value="${searchtext}" size="30">
+						<button type="submit" title="Buscar" class="btn btn-link"><i class="fas fa-search" style="font-size:24px;color:black"></i></button>
+						<a th:href="@{/articles/search}" class="btn" title="Netejar, mostrar tots"><i class="fas fa-broom" style="font-size:24px;color:black"></i></a>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table table-striped">
+						<tr>
+							<th></th>
+			                <th>Id</th>
+			                <th>Referencia</th>
+			                <th>Nom</th>	
+			                <th>Codi de barres</th>
+			                <th>Stock actual</th>
+			                <th>Mesura</th>
+			            	<th>Stock mínim</th>
+						</tr>
+			            <tr th:each="viewmyarticles : ${viewmyarticles}">
+			            	<td class="td-botonera">
+			            		<a th:href="@{/articles/__${viewmyarticles.id}__}" class="btn" title="Editar"><i class="fas fa-edit" style="font-size:24px;color:black"></i></a>
+			            		<a th:if="${not #lists.isEmpty(viewmyarticles.registreCanvis)}" th:href="@{/registrecanvis/__${viewmyarticles.id}__}" class="btn" title="Veure registre de canvis"><i class="fas fa-file-alt" style="font-size:24px;color:black"></i></a>
+			            		<a th:if="${not #lists.isEmpty(viewmyarticles.entrades)}" th:href="@{/moviments/__${viewmyarticles.id}__}" class="btn" title="Veure Moviments"><i class="fas fa-dolly" style="font-size:24px;color:black"></i></a>
+			            	</td>
+			            	<td th:text="${viewmyarticles.id}"></td>
+			            	<td th:text="${viewmyarticles.reference}"></td>
+			                <td th:text="${viewmyarticles.nom}"></td>
+			                <td th:text="${viewmyarticles.serialNumber}"></td>
+			                <td>[[${viewmyarticles.stockactual}]]
+			                	<!-- Empty cell to add custom items -->
+			                	<form th:action="@{/moviments/__${viewmyarticles.id}__/add}" method="GET"><input type="hidden" name="searchtext" th:value="${searchtext}"><input type="Submit" name="action" value="-" class="btn"><input type="text" name="quantitat" size="2"><input type="Submit" value="+" class="btn"></form>
+			               	</td>
+			               	<td th:text="${viewmyarticles.mesura?.id}"></td>
+			                <td>
+			                	<!-- alarm if stock < minimum desired stock -->
+			                	<span th:if="${viewmyarticles.stockactual<viewmyarticles.stockminim}" title="stock actual per sota de stock minim"><i class="fa fa-exclamation-triangle" style="font-size:24px;color:red"></i></span> 
+			                	[[${viewmyarticles.stockminim}]] 
+			                </td>
+			             </tr>
+			             <tr>
+			             	<td colspan="100%" align="center">
+			             		<span th:if="${currentpage>0}">
+							        <a th:href="|@{__${command}__(searchtext=${searchtext},currentpage=${currentpage-1})}|" th:class="link"><< </a>
+							    </span>
+							    <th:block th:each="i: ${#numbers.sequence(0, totalpages-1)}">
+							        <span th:if="${currentpage == i}" class="selected" th:class="link">[[${i}+1]]</span>
+							        <span th:unless="${currentpage == i}">
+							             <a th:href="|@{__${command}__(searchtext=${searchtext},currentpage=${i})}|" th:class="link">[[${i}+1]]</a>
+							        </span>
+							    </th:block>
+							    <span th:if="${(currentpage+1)<totalpages}">
+							        <a th:href="|@{__${command}__(searchtext=${searchtext},currentpage=${currentpage+1})}|" th:class="link">>></a>
+							    </span>
+			             	</td>
+			             </tr>                       
+					</table>
+				</div>
+			</div>
+
+			<script src="/webjars/jquery/1.9.1/jquery.min.js"></script>
+	        <script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		</div> <!-- container -->        
+
+	</body>
+</html>
